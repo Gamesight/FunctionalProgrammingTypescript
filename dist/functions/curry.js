@@ -5,4 +5,8 @@ function curry(f) {
     return function (a) { return (function (b) { return f(a, b); }); };
 }
 exports.curry = curry;
+function uncurry(f) {
+    return function (a, b) { return f(a)(b); };
+}
+exports.uncurry = uncurry;
 //# sourceMappingURL=curry.js.map
