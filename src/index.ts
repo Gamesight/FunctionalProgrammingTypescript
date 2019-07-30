@@ -28,7 +28,7 @@ class Runner {
 
 
     const optList: Opt<number>[] = []
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 10; i++) {
       const x = Math.random()*10
       optList.push( (x > 5) ? new Some<number>(x) : new None())
     }
@@ -39,7 +39,7 @@ class Runner {
     //optList.map(x => x.map(a => a*10)).map(x => x.getOrElse(-1)).forEach(x => console.log(x))
 
     const eithList: Either<Error, number>[] = []
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 10; i++) {
       try {
         const x = Math.random() - 0.5
         if ( x < 0 ) throw Error("Below zero error")
@@ -49,8 +49,15 @@ class Runner {
         eithList.push(new Left(e))
       }
     }
+    console.log("Mapping Rights to zero...\nFiltering out lefts...\nSumming...(result should be zero)")
 
-    console.log(eithList.map(liftEither(x => 0)))
+    console.log(`Sum: ${
+      eithList.map(liftEither(x => 0)).filter(x => x.isRight()).reduce((a,c) => a + c.get(), 0)
+    }`)
+
+    console.log('Getting the first left...')
+
+    console.log(`First error: ${eithList.filter(x => x.isLeft())[0].get()}`)
 
     return 0
   }
