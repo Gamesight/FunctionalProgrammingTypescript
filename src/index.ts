@@ -7,6 +7,25 @@ function sumAndStringify(a: number, b: number): string {
   return String(a+b)
 }
 
+// A wrapper function to ensure that Math.random() doesn't get evaluated
+// to a constant during compilation
+function getNextRandom(): number {
+  return Math.random()
+}
+
+// A silly function to randomly generate a Left or a Right by
+// throwing a meaningless error
+function leftOrRight(): Either<Error, number> {
+  try {
+    const x = Math.random() - 0.5
+    if ( x < 0 ) throw Error("Below zero error")
+    return new Right(x * 100)
+  }
+  catch (e) {
+    return new Left(e)
+  }
+}
+
 class Runner {
   public static main(): number {
     const a: number = 1
@@ -21,34 +40,22 @@ class Runner {
     console.log('Calling partial(2)...')
     console.log(`Result: ${partial1(2)}`)
 
-    console.log('Uncurrying sumAndStringify...')
+    console.log('Uncurrying the curried function...')
     const uncurried = uncurry(curried)
     console.log('Calling uncurried(1,2)')
     console.log(`Result: ${uncurried(1,2)}`)
 
 
-    const optList: Opt<number>[] = []
-    for (let i = 0; i < 10; i++) {
-      const x = Math.random()*10
-      optList.push( (x > 5) ? new Some<number>(x) : new None())
-    }
-    //optList.forEach(x => console.log(x))
-    console.log(optList.length)
+    const optList: Opt<number>[] = Array<number>(10).fill(0)
+      .map(x => getNextRandom() - 0.5) // Map to a random number between -0.5 and 0.5
+      .map(x => (x > 0) ? new Some<number>(x) : new None()) // Create Some(x) for positives, or None otherwise
 
-    console.log(optList.map(x => x.map(y => Math.ceil(y*10))).map(x => x.getOrElse(-1)))
-    //optList.map(x => x.map(a => a*10)).map(x => x.getOrElse(-1)).forEach(x => console.log(x))
+    console.log("Creating random values between -0.5 and +0.5...\nBuilding array of None ")
+    console.log("Mapping Some values to 1, and Nones to 0...")
+    console.log(`Array: ${optList.map(liftOpt(x => 1)).map(x => x.getOrElse(0))}`)
 
-    const eithList: Either<Error, number>[] = []
-    for (let i = 0; i < 10; i++) {
-      try {
-        const x = Math.random() - 0.5
-        if ( x < 0 ) throw Error("Below zero error")
-        eithList.push( new Right(x * 100) )
-      }
-      catch (e) {
-        eithList.push(new Left(e))
-      }
-    }
+    const eithList: Either<Error, number>[] = Array<number>(10).fill(0).map(x => leftOrRight())
+
     console.log("Mapping Rights to zero...\nFiltering out lefts...\nSumming...(result should be zero)")
 
     console.log(`Sum: ${
