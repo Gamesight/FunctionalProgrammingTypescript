@@ -1,5 +1,8 @@
-To run this program:
+Install Dependencies  
+`npm install`
 
-`tsc -p ./src`
+Build the project  
+`npm run build`
 
-`node ./dist/index.js`
+Run the main method  
+`npm run main`
