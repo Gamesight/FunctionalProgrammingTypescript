@@ -8,5 +8,10 @@
     "exclude": [
         "node_modules",
         "**/*.spec.ts"
+    ],
+    "include":[
+        "./types",
+        "./functions",
+        "./"
     ]
 }

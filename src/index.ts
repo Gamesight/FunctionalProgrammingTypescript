@@ -1,4 +1,7 @@
 import { curry, uncurry } from './functions/curry'
+import { Opt, Some, None } from './types/option'
+import { Either, Right, Left } from './types/either'
+import { liftOpt, liftEither } from './functions/lift'
 
 function sumAndStringify(a: number, b: number): string {
   return String(a+b)
@@ -24,6 +27,30 @@ class Runner {
     console.log(`Result: ${uncurried(1,2)}`)
 
 
+    const optList: Opt<number>[] = []
+    for (let i = 0; i < 100; i++) {
+      const x = Math.random()*10
+      optList.push( (x > 5) ? new Some<number>(x) : new None())
+    }
+    //optList.forEach(x => console.log(x))
+    console.log(optList.length)
+
+    console.log(optList.map(x => x.map(y => Math.ceil(y*10))).map(x => x.getOrElse(-1)))
+    //optList.map(x => x.map(a => a*10)).map(x => x.getOrElse(-1)).forEach(x => console.log(x))
+
+    const eithList: Either<Error, number>[] = []
+    for (let i = 0; i < 100; i++) {
+      try {
+        const x = Math.random() - 0.5
+        if ( x < 0 ) throw Error("Below zero error")
+        eithList.push( new Right(x * 100) )
+      }
+      catch (e) {
+        eithList.push(new Left(e))
+      }
+    }
+
+    console.log(eithList.map(liftEither(x => 0)))
 
     return 0
   }
