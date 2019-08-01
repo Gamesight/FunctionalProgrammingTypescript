@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p ./src",
-    "main": "node ./dist/index.js"
+    "curry": "node ./dist/demos/curry.js",
+    "compose": "node ./dist/demos/compose.js",
+    "either": "node ./dist/demos/either.js",
+    "option": "node ./dist/demos/option.js"
   },
   "author": "Jeremy Owens",
   "license": "ISC"

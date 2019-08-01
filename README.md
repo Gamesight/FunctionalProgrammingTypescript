@@ -4,5 +4,11 @@ Install Dependencies
 Build the project  
 `npm run build`
 
-Run the main method  
-`npm run main`
+Run a demo (example is curry)
+`npm run curry`
+
+Current Demos:  
+* compose
+* curry
+* either
+* option
