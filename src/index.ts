@@ -19,7 +19,7 @@ function leftOrRight(): Either<Error, number> {
   try {
     const x = Math.random() - 0.5
     if ( x < 0 ) throw Error("Below zero error")
-    return new Right(x * 100)
+    return new Right(1)
   }
   catch (e) {
     return new Left(e)
@@ -41,9 +41,8 @@ class Runner {
     console.log(`Result: ${partial1(2)}`)
 
     console.log('Uncurrying the curried function...')
-    const uncurried = uncurry(curried)
     console.log('Calling uncurried(1,2)')
-    console.log(`Result: ${uncurried(1,2)}`)
+    console.log(`Result: ${uncurry(curried)(1,2)}`)
 
 
     const optList: Opt<number>[] = Array<number>(10).fill(0)
@@ -52,14 +51,19 @@ class Runner {
 
     console.log("Creating random values between -0.5 and +0.5...\nBuilding array of None ")
     console.log("Mapping Some values to 1, and Nones to 0...")
+
     console.log(`Array: ${optList.map(liftOpt(x => 1)).map(x => x.getOrElse(0))}`)
 
     const eithList: Either<Error, number>[] = Array<number>(10).fill(0).map(x => leftOrRight())
 
-    console.log("Mapping Rights to zero...\nFiltering out lefts...\nSumming...(result should be zero)")
+    console.log("Mapping Rights to zero...\nFiltering out lefts...\nSumming...(result should be a string of 2s)")
 
     console.log(`Sum: ${
-      eithList.map(liftEither(x => 0)).filter(x => x.isRight()).reduce((a,c) => a + c.get(), 0)
+      eithList.map(
+        liftEither(
+          curry(sumAndStringify)(1)
+        )
+      ).filter(x => x.isRight()).reduce((a,c) => a + c.get(), "")
     }`)
 
     console.log('Getting the first left...')
