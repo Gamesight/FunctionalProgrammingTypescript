@@ -4,7 +4,7 @@ Install Dependencies
 Build the project  
 `npm run build`
 
-Run a demo (example is curry)
+Run a demo (example is curry)  
 `npm run curry`
 
 Current Demos:  
