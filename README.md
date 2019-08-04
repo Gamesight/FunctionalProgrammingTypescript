@@ -12,3 +12,4 @@ Current Demos:
 * curry
 * either
 * option
+* list
