@@ -54,7 +54,21 @@ export function map<T,U>(f: (t: T) => U, l: List<T>, m: List<U> = empty()): List
 
 export function print<T>(l: List<T>, s: string = ''): string {
   return matcher({
-    Empty: e => '[' + s.slice(1) + ']',
+    Empty: e => '[' + ((s.length > 0) ? s.slice(1) : s) + ']',
     Node: n => print(n.tail, s + ',' + String(n.head))
   })(l)
+}
+
+export function foldLeft<T,U>(list: List<T>, z: U, f: (t: T, u: U) => U): U {
+  return matcher({
+    Empty: e => z,
+    Node: (n: Node<T>) => foldLeft(n.tail, f(n.head, z), f)
+  })(list)
+}
+
+export function foldRight<T,U>(list: List<T>, z: U, f: (t: T, u: U) => U): U {
+  return matcher({
+    Empty: e => z,
+    Node: (n: Node<T>) => f(n.head, foldRight(n.tail, z, f))
+  })(list)
 }
