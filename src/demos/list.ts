@@ -1,4 +1,4 @@
-import { print, list, empty, map, foldLeft, foldRight} from '../types/list'
+import { print, list, EMPTY, map, foldLeft, foldRight} from '../types/list'
 
 
 

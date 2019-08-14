@@ -24,13 +24,11 @@ function matcher<T,U>(p: ListPattern<T,U>): (l: List<T>) => U {
 // A generic solution to the above pattern can be found:
 // https://medium.com/@fillopeter/pattern-matching-with-typescript-done-right-94049ddd671c
 
-export function empty(): Empty {
-  return {
+export const EMPTY: Empty = {
     type: 'Empty'
   }
-}
 
-export function list<T>(head:T, tail:List<T> = empty()): List<T> {
+export function list<T>(head:T, tail:List<T> = EMPTY): List<T> {
   return {
     type: 'Node',
     head: head,
@@ -38,14 +36,14 @@ export function list<T>(head:T, tail:List<T> = empty()): List<T> {
   }
 }
 
-export function reverse<T>(l: List<T>, r: List<T> = empty()) {
+export function reverse<T>(l: List<T>, r: List<T> = EMPTY) {
   return matcher({
     Empty: e => r,
     Node: n => reverse(n.tail, list(n.head, r))
   })(l)
 }
 
-export function map<T,U>(f: (t: T) => U, l: List<T>, m: List<U> = empty()): List<U> {
+export function map<T,U>(f: (t: T) => U, l: List<T>, m: List<U> = EMPTY): List<U> {
   return reverse(matcher({
     Empty: (e: Empty) => m,
     Node: (n: Node<T>) => map(f, n.tail, list(f(n.head), m))
