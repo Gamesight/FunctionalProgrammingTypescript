@@ -36,24 +36,33 @@ export function list<T>(head:T, tail:List<T> = EMPTY): List<T> {
   }
 }
 
-export function reverse<T>(l: List<T>, r: List<T> = EMPTY) {
+declare global {
+  interface Array<T> {
+    mkList(): List<T>
+  }
+}
+
+Array.prototype['mkList'] = function<T>(): List<T> {
+  if (this.length === 0) return EMPTY
+  return list<T>(this[0], this.slice(1).mkList())
+}
+
+
+export function reverse<T>(l: List<T>, r: List<T> = EMPTY): List<T> {
   return matcher({
     Empty: e => r,
-    Node: n => reverse(n.tail, list(n.head, r))
+    Node: (n: Node<T>) => reverse(n.tail, list(n.head, r))
   })(l)
 }
 
-export function map<T,U>(f: (t: T) => U, l: List<T>, m: List<U> = EMPTY): List<U> {
-  return reverse(matcher({
-    Empty: (e: Empty) => m,
-    Node: (n: Node<T>) => map(f, n.tail, list(f(n.head), m))
-  })(l))
+export function map<T,U>(f: (t: T) => U, l: List<T>): List<U> {
+  return reverse(foldLeft<T, List<U>>(l, EMPTY, (t:T, out:List<U>) => list(f(t), out)))
 }
 
 export function print<T>(l: List<T>, s: string = ''): string {
   return matcher({
     Empty: e => '[' + ((s.length > 0) ? s.slice(1) : s) + ']',
-    Node: n => print(n.tail, s + ',' + String(n.head))
+    Node: (n: Node<T>) => print(n.tail, s + ',' + String(n.head))
   })(l)
 }
 
@@ -70,3 +79,10 @@ export function foldRight<T,U>(list: List<T>, z: U, f: (t: T, u: U) => U): U {
     Node: (n: Node<T>) => f(n.head, foldRight(n.tail, z, f))
   })(list)
 }
+
+
+/*
+export function reverseByFoldLeft(l: List<T>, r: List<T> = EMPTY): List<T> {
+
+}
+*/
