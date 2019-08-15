@@ -55,16 +55,6 @@ export function reverse<T>(l: List<T>, r: List<T> = EMPTY): List<T> {
   })(l)
 }
 
-export function map<T,U>(f: (t: T) => U, l: List<T>): List<U> {
-  return reverse(foldLeft<T, List<U>>(l, EMPTY, (t:T, out:List<U>) => list(f(t), out)))
-}
-
-export function print<T>(l: List<T>, s: string = ''): string {
-  return matcher({
-    Empty: e => '[' + ((s.length > 0) ? s.slice(1) : s) + ']',
-    Node: (n: Node<T>) => print(n.tail, s + ',' + String(n.head))
-  })(l)
-}
 
 export function foldLeft<T,U>(list: List<T>, z: U, f: (t: T, u: U) => U): U {
   return matcher({
@@ -80,6 +70,17 @@ export function foldRight<T,U>(list: List<T>, z: U, f: (t: T, u: U) => U): U {
   })(list)
 }
 
+export function mapLeft<T,U>(f: (t: T) => U, l: List<T>): List<U> {
+  return reverse(foldLeft<T, List<U>>(l, EMPTY, (t:T, out:List<U>) => list(f(t), out)))
+}
+
+export function mapRight<T,U>(f: (t: T) => U, l: List<T>): List<U> {
+  return foldRight<T, List<U>>(l, EMPTY, (t:T, out:List<U>) => list(f(t), out))
+}
+
+export function print<T>(l: List<T>): string {
+  return `[${foldRight<T,string>(l, '', (t,u) => String(t) + ',' + u).slice(0, -1)}]`
+}
 
 /*
 export function reverseByFoldLeft(l: List<T>, r: List<T> = EMPTY): List<T> {

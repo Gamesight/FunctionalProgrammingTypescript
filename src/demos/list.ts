@@ -1,4 +1,4 @@
-import { print, map, foldLeft, foldRight } from '../types/list'
+import { print, mapLeft, mapRight, foldLeft, foldRight } from '../types/list'
 
 
 
@@ -12,7 +12,8 @@ class Runner {
     console.log(foldLeft(l, 0, (a,b) => a+b))
     console.log(foldRight(l, 0, (a,b) => a+b))
 
-    console.log(print(map(n => n*2, l)))
+    console.log(print(mapLeft(n => n*2, l)))
+    console.log(print(mapRight(n => n*2, l)))
 
 
     return 0
