@@ -74,12 +74,16 @@ export function mapLeft<T,U>(f: (t: T) => U, l: List<T>): List<U> {
   return reverse(foldLeft<T, List<U>>(l, EMPTY, (t:T, out:List<U>) => list(f(t), out)))
 }
 
-export function mapRight<T,U>(f: (t: T) => U, l: List<T>): List<U> {
+export function map<T,U>(f: (t: T) => U, l: List<T>): List<U> {
   return foldRight<T, List<U>>(l, EMPTY, (t:T, out:List<U>) => list(f(t), out))
 }
 
-export function print<T>(l: List<T>): string {
+export function printR<T>(l: List<T>): string {
   return `[${foldRight<T,string>(l, '', (t,u) => String(t) + ',' + u).slice(0, -1)}]`
+}
+
+export function printL<T>(l: List<T>): string {
+  return `[${foldLeft<T,string>(l, '', (t,u) => u + ',' + String(t)).slice(1)}]`
 }
 
 /*

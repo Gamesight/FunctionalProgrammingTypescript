@@ -1,4 +1,4 @@
-import { print, mapLeft, mapRight, foldLeft, foldRight } from '../types/list'
+import { mapLeft, map, foldLeft, foldRight, printL, printR} from '../types/list'
 
 
 
@@ -7,13 +7,14 @@ class Runner {
 
     const l = [1,2,3,4].mkList()
 
-    console.log(print(l))
+    console.log(printR(l))
+    console.log(printL(l))
 
     console.log(foldLeft(l, 0, (a,b) => a+b))
     console.log(foldRight(l, 0, (a,b) => a+b))
 
-    console.log(print(mapLeft(n => n*2, l)))
-    console.log(print(mapRight(n => n*2, l)))
+    console.log(printL(mapLeft(n => n*2, l)))
+    console.log(printL(map(n => n*2, l)))
 
 
     return 0
