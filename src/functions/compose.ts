@@ -5,8 +5,7 @@
  * g: a function that maps B => C
  * returns a function mapping A => C
  */
-/*
-export function compose<A,B,C>(f: <TYPE DECLARATION>, g: <TYPE DECLARATION>): <TYPE DECLARATION> {
 
+export function compose<A,B,C>(f: (a: A) => B, g: (b: B) => C): (a: A) => C {
+  return (a: A) => g(f(a))
 }
-*/

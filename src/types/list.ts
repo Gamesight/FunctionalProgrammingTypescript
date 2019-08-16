@@ -42,6 +42,7 @@ declare global {
   }
 }
 
+
 Array.prototype['mkList'] = function<T>(): List<T> {
   if (this.length === 0) return EMPTY
   return list<T>(this[0], this.slice(1).mkList())
@@ -86,8 +87,6 @@ export function printL<T>(l: List<T>): string {
   return `[${foldLeft<T,string>(l, '', (t,u) => u + ',' + String(t)).slice(1)}]`
 }
 
-/*
-export function reverseByFoldLeft(l: List<T>, r: List<T> = EMPTY): List<T> {
-
+export function reverseByFoldLeft<T>(l: List<T>): List<T> {
+  return foldLeft<T, List<T>>( l , EMPTY , (head, out) => list(head, out) )
 }
-*/

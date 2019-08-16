@@ -1,4 +1,4 @@
-import { mapLeft, map, foldLeft, foldRight, printL, printR} from '../types/list'
+import { reverseByFoldLeft, mapLeft, map, foldLeft, foldRight, printL, printR} from '../types/list'
 
 
 
@@ -15,6 +15,8 @@ class Runner {
 
     console.log(printL(mapLeft(n => n*2, l)))
     console.log(printL(map(n => n*2, l)))
+
+    console.log(printL(reverseByFoldLeft(l)))
 
 
     return 0
